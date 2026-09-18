@@ -1,0 +1,75 @@
+/* ============================================================
+   ASCEND — motion. One language for every interior page.
+   Type arrives line by line from behind a mask, images are
+   wiped in, the page itself is handed over by a graphite
+   curtain, and the cursor is answered by the things it nears.
+   Everything is an enhancement: without the script the pages
+   are complete and still; with reduced motion they stay still.
+   ============================================================ */
+
+/* ---------- the curtain ----------
+   Present in the markup so the first paint is covered. The script lifts it;
+   if the script never runs, it lifts itself. */
+.mo-curtain {
+  position: fixed; inset: 0; z-index: 3000; background: #0C0C0C;
+  pointer-events: none; display: none; will-change: clip-path;
+}
+html.mo .mo-curtain { display: block; animation: mo-safety 0.01s 1.6s forwards; }
+html.mo.mo-lifted .mo-curtain { animation: none; }
+@keyframes mo-safety { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .mo-curtain { display: none !important; } }
+.mo-curtain-name {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; white-space: nowrap;
+  font-family: var(--font-primary); font-weight: 600; font-size: clamp(1.7rem, 4.2vw, 3.6rem); letter-spacing: -0.035em;
+  color: #F4F4F0; line-height: 1.1;
+}
+@media (max-width: 720px) { .mo-curtain-name { white-space: normal; text-align: center; width: 84vw; font-size: clamp(1.6rem, 8vw, 2.4rem); } }
+
+/* ---------- the reading line ---------- */
+.mo-progress { position: fixed; left: 0; top: 0; width: 100%; height: 2px; background: var(--accent, #E8613C); transform-origin: left; transform: scaleX(0); z-index: 1200; pointer-events: none; }
+
+/* ---------- masked lines ---------- */
+.mo-line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.mo-line-in { display: block; will-change: transform; }
+.mo-w { display: inline; }
+
+/* ---------- images ---------- */
+/* will-change is left to GSAP while a tween runs; static hints cost memory on phones */
+
+/* ---------- links draw their line ---------- */
+.pg .pg-link {
+  border-bottom: 0; padding-bottom: 1px;
+  background-image: linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--hair-2), var(--hair-2));
+  background-size: 0% 1px, 100% 1px; background-position: 0 100%, 0 100%; background-repeat: no-repeat;
+  transition: background-size 0.55s var(--ease), color 0.3s var(--ease);
+}
+.pg .pg-link:hover { background-size: 100% 1px, 100% 1px; }
+
+/* ---------- fields draw their line on focus ---------- */
+.pg-field:not(fieldset) { position: relative; }
+.pg-field:not(fieldset)::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.55s var(--ease); pointer-events: none;
+}
+.pg-field:not(fieldset):focus-within::after { transform: scaleX(1); }
+
+/* ---------- buttons answer the cursor ---------- */
+
+/* ---------- the preview that follows the cursor over the services index ---------- */
+.mo-preview {
+  position: fixed; left: 0; top: 0; width: 300px; height: 210px; border-radius: 14px; overflow: hidden;
+  background: #FBFBF9; box-shadow: 0 34px 70px -24px rgba(16, 16, 16, 0.32), 0 0 0 1px rgba(16, 16, 16, 0.06);
+  pointer-events: none; z-index: 1500; opacity: 0; transform: translate(-50%, -50%) scale(0.9); will-change: transform, opacity;
+}
+.mo-preview img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 18px; }
+@media (hover: none), (max-width: 1024px) { .mo-preview { display: none; } }
+
+/* ---------- rows and entries settle as they arrive ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mo-line-in, .sv-btn, .pg-btn, .mo-preview { transition: none !important; transform: none !important; }
+  .pg .pg-link, .pg-field:not(fieldset)::after { transition: none !important; }
+}
+
+/* ---------- the drawing, before it draws ---------- */
+@media (prefers-reduced-motion: reduce) { .sv-draw * { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; opacity: 1 !important; transform: none !important; } }

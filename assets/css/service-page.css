@@ -1,0 +1,247 @@
+/* ============================================================
+   ASCEND — service pages.
+   One quiet system: generous space, one idea per screen, one
+   image per chapter, and a single moment where the page turns dark.
+   Header, footer and cursor are inherited untouched.
+   ============================================================ */
+.sv {
+  --paper: #F3F3EF;
+  --ink: #101010;
+  --ink-2: #6B6B66;
+  --ink-3: #9A9A94;
+  --hair: rgba(16, 16, 16, 0.11);
+  --graphite: #0C0C0C;
+  --on-dark: #F4F4F0;
+  --on-dark-2: rgba(244, 244, 240, 0.62);
+  --hair-dark: rgba(244, 244, 240, 0.16);
+  --accent: #E8613C;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --shell: 1180px;
+  --gap: clamp(1.5rem, 5vw, 4rem);
+
+  /* the zone variables the dark turn animates */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-2: var(--ink-2);
+  --fg-3: var(--ink-3);
+  --rule: var(--hair);
+
+  background: var(--paper);
+  color: var(--ink);
+}
+/* The shared header starts transparent so it can sit over the homepage's dark
+   hero. On a paper page that leaves white type on a light ground until the
+   first scroll, so here it begins in its scrolled state. Its look is unchanged;
+   only the moment it appears is. */
+body.paper-page .nav { background: rgba(10, 15, 40, 0.97); }
+.sv-in { max-width: var(--shell); margin: 0 auto; padding: 0 var(--gap); }
+.sv-mid { max-width: 860px; margin: 0 auto; text-align: center; }
+
+.sv-label {
+  display: block; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-3);
+  margin: 0 0 clamp(1.4rem, 3vh, 2.2rem);
+}
+.sv-label.is-accent { color: var(--accent); }
+/* production sets part of some headings in the editorial italic; the same face here */
+.sv-h em { font-family: var(--font-editorial); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+.sv-link { display: inline-block; margin-top: 1.4rem; font-size: 0.95rem; font-weight: 500; color: var(--fg); border-bottom: 1px solid var(--rule); transition: color 0.3s var(--ease), border-color 0.3s var(--ease); }
+.sv-link:hover { color: var(--accent); border-color: var(--accent); }
+
+
+h1.sv-h, h2.sv-h {
+  font-family: var(--font-primary); font-weight: 600; color: var(--fg);
+  letter-spacing: -0.042em; line-height: 1.03; margin: 0;
+  text-wrap: balance;
+}
+h1.sv-h { font-size: clamp(2.5rem, 6.2vw, 6.2rem); letter-spacing: -0.05em; }
+h2.sv-h { font-size: clamp(2rem, 4.4vw, 4.2rem); }
+
+.sv-lede {
+  margin: clamp(1.6rem, 4vh, 2.6rem) auto 0; max-width: 46ch;
+  font-size: clamp(1.06rem, 1.35vw, 1.3rem); line-height: 1.6; color: var(--fg-2);
+}
+.sv-body {
+  margin: clamp(1.4rem, 3.4vh, 2.2rem) auto 0; max-width: 62ch;
+  font-size: clamp(1.02rem, 1.18vw, 1.14rem); line-height: 1.68; color: var(--fg-2);
+}
+
+/* one button, the same everywhere */
+.sv-btn {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  margin-top: clamp(2rem, 5vh, 3rem);
+  padding: 1.05rem 1.9rem; border-radius: 100px;
+  background: var(--fg); color: var(--bg);
+  font-size: 0.86rem; font-weight: 600; letter-spacing: 0.01em;
+  transition: transform 0.5s var(--ease), opacity 0.4s;
+}
+.sv-btn span { transition: transform 0.5s var(--ease); }
+.sv-btn:hover { transform: translateY(-2px); }
+.sv-btn:hover span { transform: translateX(3px); }
+
+.sv-link {
+  display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1.8rem;
+  font-size: 0.9rem; font-weight: 500; color: var(--accent);
+}
+.sv-link span { transition: transform 0.45s var(--ease); }
+.sv-link:hover span { transform: translateX(4px); }
+
+/* ---------- hero ---------- */
+.sv-hero { padding: clamp(8rem, 18vh, 13rem) 0 clamp(3rem, 7vh, 5rem); text-align: center; }
+.sv-hero .sv-lede { margin-left: auto; margin-right: auto; }
+.sv-stage { margin: clamp(3.5rem, 9vh, 7rem) auto 0; max-width: 1240px; padding: 0 var(--gap); }
+.sv-hero .sv-stage { max-width: 1320px; }
+.sv-stage img, .sv-stage > svg { display: block; width: 100%; height: auto; }
+
+/* ---------- figures ---------- */
+.sv-figures { padding: clamp(4rem, 10vh, 8rem) 0; }
+.sv-figrow {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); position: relative;
+  gap: clamp(2rem, 5vw, 5rem); padding-top: clamp(2.4rem, 5vh, 3.6rem);
+}
+/* the rule above the figures draws in from the left as they arrive */
+.sv-figrow::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--rule); transform: scaleX(0); transform-origin: left; transition: transform 1.4s var(--ease) 0.1s; }
+.sv-figrow.is-in::before { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) { .sv-figrow::before { transform: none; transition: none; } }
+.sv ::selection { background: var(--accent); color: #fff; }
+.sv-fig strong {
+  display: block; font-family: var(--font-primary); font-weight: 600; color: var(--fg);
+  font-size: clamp(2.6rem, 5.4vw, 4.6rem); letter-spacing: -0.05em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.sv-fig span {
+  display: block; margin-top: 1rem; max-width: 26ch;
+  font-size: 0.95rem; line-height: 1.5; color: var(--fg-2);
+}
+
+/* The display size is tuned for short numerals. Past about seven characters a
+   value no longer fits the column, and because the column stops growing at the
+   container's max width while a vw-based size does not, the widest screens are
+   where it breaks first. Longer values step down instead of wrapping; a value
+   that is a roster rather than a number drops to reading size and wraps as the
+   list it is. */
+.sv-fig.is-mid strong  { font-size: clamp(2.2rem, 4.2vw, 3.3rem); }
+.sv-fig.is-long strong { font-size: clamp(1.9rem, 3.3vw, 2.7rem); letter-spacing: -0.04em; }
+.sv-fig.is-text strong {
+  font-size: clamp(1.45rem, 2.1vw, 2rem); letter-spacing: -0.02em; line-height: 1.24;
+}
+
+/* ---------- chapters ---------- */
+.sv-chapter { padding: clamp(6rem, 15vh, 11rem) 0; }
+.sv-chapter + .sv-chapter { padding-top: 0; }
+.sv-chapter .sv-stage { margin-top: clamp(3rem, 8vh, 6rem); }
+
+/* ---------- the turn: paper gives way to graphite ----------
+   The panel is graphite from the start and its type is always light, so the
+   contrast never passes through the muddy middle a colour fade would create.
+   What moves is the panel itself: it arrives inset and rounded, then opens to
+   full bleed as you reach it, and closes again on the way out.               */
+.sv-turn {
+  background: var(--graphite);
+  --fg: var(--on-dark); --fg-2: var(--on-dark-2); --fg-3: var(--on-dark-2); --rule: var(--hair-dark);
+  color: var(--on-dark);
+  --turn-x: 0px; --turn-r: 0px;
+  clip-path: inset(0 var(--turn-x) 0 var(--turn-x) round var(--turn-r));
+  will-change: clip-path;
+}
+.sv-turn .sv-btn { background: var(--on-dark); color: var(--graphite); }
+
+/* ---------- the list ---------- */
+.sv-list { padding: clamp(6rem, 14vh, 10rem) 0; }
+.sv-list-head { max-width: 860px; margin: 0 auto clamp(3rem, 7vh, 5rem); text-align: center; }
+.sv-row {
+  display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: clamp(1rem, 3vw, 3rem); align-items: start;
+  padding: clamp(1.9rem, 4vh, 2.9rem) 0; border-top: 1px solid var(--rule);
+}
+.sv-row:last-child { border-bottom: 1px solid var(--rule); }
+.sv-row b {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; color: var(--fg-3);
+  font-variant-numeric: tabular-nums; padding-top: 0.45rem;
+}
+.sv-row h3 {
+  margin: 0; font-family: var(--font-primary); font-weight: 600; color: var(--fg);
+  font-size: clamp(1.16rem, 1.75vw, 1.6rem); letter-spacing: -0.028em; line-height: 1.22;
+}
+.sv-row p { margin: 0; font-size: 1rem; line-height: 1.62; color: var(--fg-2); }
+
+/* ---------- questions ---------- */
+.sv-faq { padding: clamp(5rem, 12vh, 9rem) 0 clamp(6rem, 14vh, 10rem); }
+.sv-faq-head { max-width: 860px; margin: 0 auto clamp(2.6rem, 6vh, 4rem); text-align: center; }
+.sv-q { border-top: 1px solid var(--rule); }
+.sv-q:last-of-type { border-bottom: 1px solid var(--rule); }
+.sv-q button {
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 1.4rem;
+  gap: 1.5rem; align-items: start; text-align: left; background: none; border: 0;
+  padding: clamp(1.5rem, 3vh, 2rem) 0; cursor: pointer; color: var(--fg); font-family: inherit;
+}
+.sv-q .t {
+  font-size: clamp(1.05rem, 1.5vw, 1.32rem); font-weight: 500;
+  letter-spacing: -0.02em; line-height: 1.35;
+}
+.sv-q .pm { position: relative; width: 1.05rem; height: 1.05rem; margin-top: 0.28rem; justify-self: end; transition: transform 0.55s var(--ease); }
+.sv-q .pm::before, .sv-q .pm::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--fg); }
+.sv-q .pm::before { width: 100%; height: 1px; transform: translate(-50%, -50%); }
+.sv-q .pm::after { width: 1px; height: 100%; transform: translate(-50%, -50%); }
+.sv-q.is-open .pm { transform: rotate(45deg); }
+.sv-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease); }
+.sv-a > div { overflow: hidden; }
+.sv-q.is-open .sv-a { grid-template-rows: 1fr; }
+.sv-a p {
+  margin: 0 0 clamp(1.5rem, 3vh, 2rem); max-width: 68ch;
+  font-size: 1rem; line-height: 1.68; color: var(--fg-2);
+  opacity: 0; transition: opacity 0.5s 0.12s;
+}
+.sv-q.is-open .sv-a p { opacity: 1; }
+
+/* ---------- close ---------- */
+.sv-final { padding: clamp(7rem, 17vh, 12rem) 0 clamp(8rem, 20vh, 14rem); text-align: center; }
+
+/* ---------- Google Ads: Material motion ----------
+   That page uses Google's own motion system rather than this one: the
+   emphasized easing curve, and a longer duration on the large moving element.
+   No Google mark, wordmark or brand colour appears anywhere on it.           */
+.ga { --ease: cubic-bezier(0.2, 0, 0, 1); }
+.ga-hero { width: 100%; height: auto; display: block; }
+.ga-hero .ga-ad { transform: translateY(384px); }
+.ga-hero .ga-row { transform: translateY(-128px); }
+.ga-hero .ga-chip { opacity: 0; }
+.ga-hero .ga-ad, .ga-hero .ga-row { transition: transform 760ms cubic-bezier(0.2, 0, 0, 1); }
+.ga-hero .ga-row:nth-of-type(2) { transition-delay: 40ms; }
+.ga-hero .ga-row:nth-of-type(3) { transition-delay: 80ms; }
+.ga-hero .ga-chip { transition: opacity 320ms 640ms linear; }
+.ga-hero.is-in .ga-ad, .ga-hero.is-in .ga-row { transform: none; }
+.ga-hero.is-in .ga-chip { opacity: 1; }
+
+/* ---------- the one reveal ---------- */
+.rv { opacity: 0; transform: translateY(18px); }
+.rv.is-in { opacity: 1; transform: none; transition: opacity 0.9s var(--ease), transform 1s var(--ease); }
+
+@media (max-width: 860px) {
+  .sv-figrow { grid-template-columns: 1fr; gap: 2.4rem; }
+  .sv-row { grid-template-columns: 3rem minmax(0, 1fr); }
+  .sv-row p { grid-column: 2; margin-top: 0.6rem; }
+  .sv-stage { padding: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1; transform: none; }
+  .ga-hero .ga-ad, .ga-hero .ga-row { transform: none; transition: none; }
+  .ga-hero .ga-chip { opacity: 1; transition: none; }
+  .sv-btn, .sv-btn span, .sv-link span, .sv-q .pm, .sv-a, .sv-a p { transition: none; }
+}
+
+/* phones: labels at a legible floor; the rows and figures breathe */
+@media (max-width: 720px) {
+  .sv-label { font-size: 0.75rem; }
+  .sv-row b { font-size: 0.8rem; }
+  .sv-fig span { font-size: 0.92rem; }
+}
+
+/* touch: chapter and FAQ links reach 44px without moving */
+@media (pointer: coarse) {
+  .sv-link { position: relative; }
+  .sv-link::before {
+    content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: max(100%, 44px); height: max(100%, 44px);
+  }
+}
