@@ -1,0 +1,12 @@
+{
+  "trailingSlash": false,
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.ascendgpartners.com" }],
+      "destination": "https://ascendgpartners.com/$1",
+      "statusCode": 301
+    }
+  ]
+}
